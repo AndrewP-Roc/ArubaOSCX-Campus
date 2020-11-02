@@ -1,27 +1,40 @@
 ---
--  hosts: all
-   roles:
-    - role: arubanetworks.aoscx_role
+- hosts: all
+  gather_facts: False
+  roles:
+   - role: arubanetworks.aoscx_role
+
+  tasks:
+    - name: Create VRF
+      aoscx_vrf:
+       name: vrf-com
+       state : create
+
+    - name: Delete L3 Interface 1/1/3
+      aoscx_l3_interface:
+       interface: 1/1/3
+       state: delete
+
+    - name: Create L3 Interface 1/1/3
+      aoscx_l3_interface:
+       interface: 1/1/3
+       vrf: vrf-com
+       description: Uplink_Interface
+       ipv4: ['100.20.1.3/24']
+       ipv6: ['2001:db8::1234/64']
+
+- hosts: all
+  gather_facts: False
+  roles:
+    - role: arubanetworks.aoscx
+  vars:
+    ansible_connection: network_cli
     
-   tasks:
-     - name: Create VRF
-       aoscx_vrf:
-        name: vrf-com
-        state : create
-
-     - name: Delete L3 Interface 1/1/3
-       aoscx_l3_interface:
-        interface: 1/1/3
-        state: delete
-
-     - name: Create L3 Interface 1/1/3
-       aoscx_l3_interface:
-        interface: 1/1/3
-        vrf: vrf-com
-        description: Uplink_Interface
-        ipv4: ['100.20.1.3/24']
-        ipv6: ['2001:db8::1234/64']
-
-     - name: Execute show run on the switch
-       aoscx_command:
-         commands: ['hostname {{ ansible_hostname }}']
+  tasks:
+    - name: Execute show run on the switch
+      aoscx_command:
+        commands: ['hostname {{ ansible_hostname }}']
+    - name: Execute show Version on Switch
+      aoscx_command:
+        commands: ['show version']
+      register: version_output
