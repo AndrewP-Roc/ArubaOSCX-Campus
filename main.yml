@@ -26,6 +26,12 @@
        name: vrf-com
        state : create
 
+    - name: Create VRF
+      aoscx_banner:
+        banner_type: banner
+        banner: "Hi! version is {{ version_out.stdout }}"
+      when: version_output.stdout is not search ('Version.*:.*FL.10.04.0020')
+       
     - name: Delete L3 Interface 1/1/3
       aoscx_l3_interface:
        interface: 1/1/3
@@ -38,5 +44,5 @@
        description: Uplink_Interface
        ipv4: ['100.20.1.3/24']
        ipv6: ['2001:db8::1234/64']
-      when: version_output.stdout is not search ('Version.*:.*FL.10.04.0020')
+
 
