@@ -2,6 +2,7 @@
 -  hosts: all
    roles:
     - role: arubanetworks.aoscx_role
+    
    tasks:
      - name: Create VRF
        aoscx_vrf:
@@ -20,3 +21,7 @@
         description: Uplink_Interface
         ipv4: ['100.20.1.3/24']
         ipv6: ['2001:db8::1234/64']
+
+     - name: Execute show run on the switch
+       aoscx_command:
+         commands: ['hostname {{ ansible_hostname }}']
