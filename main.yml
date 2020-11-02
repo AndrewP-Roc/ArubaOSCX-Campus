@@ -26,7 +26,7 @@
 - hosts: all
   gather_facts: False
   roles:
-    - role: arubanetworks.aoscx
+   - role: arubanetworks.aoscx_role
   vars:
     ansible_connection: network_cli
     
