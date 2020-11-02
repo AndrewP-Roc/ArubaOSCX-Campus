@@ -1,0 +1,6 @@
+---
+collections:
+  - name: community.network
+
+roles:
+  - role: arubanetworks.aoscx_role
