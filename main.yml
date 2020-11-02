@@ -29,7 +29,7 @@
     - name: Create VRF
       aoscx_banner:
         banner_type: banner
-        banner: "Hi! version is {{ version_out.stdout }}"
+        banner: "Hi! version is {{ version_output.stdout }}"
       when: version_output.stdout is not search ('Version.*:.*FL.10.04.0020')
        
     - name: Delete L3 Interface 1/1/3
