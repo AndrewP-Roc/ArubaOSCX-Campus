@@ -20,9 +20,3 @@
       when: ntp_output.stdout[0] == ""
 
     - debug: var=ntp_output.stdout_lines
-
-    - name: Apply config hosname if NTP
-      aoscx_command:
-        commands:
-        - hostname NTP not enabled
-      when: ntp_output.stdout[0] == ""
