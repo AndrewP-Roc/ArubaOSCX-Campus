@@ -1,0 +1,28 @@
+---
+- hosts: all
+  roles:
+    - role: arubanetworks.aoscx_role
+  vars:
+    ansible_connection: network_cli
+  tasks:
+    - name: Execute show ntp on the switch
+      aoscx_command:
+        commands:
+           - show ntp status | inc Enabled
+      register: ntp_output
+
+    - name: Apply config to sync NTP if needed
+      aoscx_command:
+        commands:
+        - config t
+        - ntp server 80.86.38.193 iburst
+        - ntp enable
+      when: ntp_output.stdout[0] == ""
+
+    - debug: var=ntp_output.stdout_lines
+
+    - name: Apply config hosname if NTP
+      aoscx_command:
+        commands:
+        - hostname NTP not enabled
+      when: ntp_output.stdout[0] == ""
