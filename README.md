@@ -1,54 +1,37 @@
 # AOS-CX-AWX-API-LAB
 Lab working on Aruba OX CX with AWX, via APi
 
-Engineer: [Andy Partridge](mailto:andy.partridge@roctechnologies.com)
+Author: [Andy Partridge](mailto:andy.partridge@roctechnologies.com)
 
 
-Play builds the configuration for the following
+OVERVIEW
+Plays are a lab to running automation on a Campus network - Aruba OS CX based.
 
-Validate configurations
+All plays a work in Progress
 
-Version control
+Version control - draft work in progress
 
-0.1 = 29/10/2020 final draft
+Play List
+Main - Test conenctivity and modules intergration
+Full-Validate - Take a copy of the config and MD5 has to confim no changes
+ntp-heal - check the state of ntp and fix if not enabled
+Checkpoint - Enable checkpoint, make a change, and confirm access. If access, confirm checkpoint.
 
-Process
-=======
 
 
 
 
-Installation
-============
+Installation Notes
+==================
 
 Requires ansible 2.9.9 or later
-No dependencies on other modules
-There is no github pull for this code
+Dependencies on on the arube modules
+Uses both API and SSH
 
 useful
 yum install tree
 yum install telnet
 
-
-
-Usage
-=====
-
-1) Inventory needs updating with the site,
-2) A variable file for each Overlay, each switch config within.
-3) Configs are overwritten within these folders on each pass
-4) The main playbooks is `main.yaml` : use it to generate the entire config.
-For example
-`ansible-playbook main.yaml`
-
-This runs the dist.j2 template,
-
-Inventory based on hostname, can be used to limit to single sites
-`ansible-playbook main.yaml -l aglc`
-
-
-Work in Progress
-================
 
 
 Ansible Installation
