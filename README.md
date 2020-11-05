@@ -12,10 +12,11 @@ All plays a work in Progress
 Version control - draft work in progress
 
 Play List
-Main - Test conenctivity and modules intergration
-Full-Validate - Take a copy of the config and MD5 has to confim no changes
-ntp-heal - check the state of ntp and fix if not enabled
-Checkpoint - Enable checkpoint, make a change, and confirm access. If access, confirm checkpoint.
+- Main - Test connectivity and modules intergration
+- Full-Validate - Take a copy of the config and MD5 has to confim no changes
+- ntp-heal - check the state of ntp and fix if not enabled
+- Pim-heal - Check pim is enabled and working, fix if not
+- Checkpoint - Enable checkpoint, make a change, and confirm access. If access, confirm checkpoint.
 
 
 
