@@ -1,0 +1,47 @@
+---
+-  hosts: all
+   roles:
+    - role: arubanetworks.aoscx_role
+   tasks:
+   - block:
+     - name: Login to AOS-CX Switch
+       uri:
+         url: "https://{{ansible_host}}/rest/v1/login"
+         method: POST
+         return_content: yes
+         headers:
+           Content-Type: "application/x-www-form-urlencoded"
+           Accept: application/json
+         body: "username={{ansible_user}}&password={{ansible_password}}"
+         validate_certs: no
+         status_code: 200
+         follow_redirects: yes
+       register: cx_session
+
+
+     - name: Get VLAN list
+       uri:
+         url: "https://{{ansible_host}}/rest/v1/system/vlans"
+         method: GET
+         body_format: json
+         headers:
+           cookie: "{{ cx_session.set_cookie }}"
+           Accept: application/json
+         validate_certs: no
+         status_code: 200
+       register: get_vlan_response
+
+     - debug: var=get_vlan_response
+
+
+     always:
+    # Logout from AOS-CX Switch
+      - name: Logout from AOS-CX Switch
+        uri:
+          url: 'https://{{ansible_host}}/rest/v1/logout'
+          method: POST
+          body_format: json
+          headers:
+           cookie: "{{ cx_session.set_cookie }}"
+          validate_certs: no
+          status_code: 200
