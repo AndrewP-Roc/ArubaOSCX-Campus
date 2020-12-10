@@ -1,0 +1,59 @@
+---
+# play runs commands on the cli
+- hosts: all
+  roles:
+    - role: arubanetworks.aoscx_role
+  vars:
+    ansible_connection: local
+#  vars_prompt:
+#   - name: ansible_user
+#     prompt: "Please provide your Username"
+#     private: false
+#   - name: ansible_password
+#     prompt: "Please provide your Password"
+#     private: true
+
+  tasks:
+    - name: Ensures /configs dir for each site exists
+      file:
+        path: "configs/"
+        state: directory
+        recurse: yes
+      run_once: true
+
+    - name: SFTP Upload configs
+      vars:
+        ansible_connection: network_cli
+      aoscx_command:
+        commands: ['copy running-config sftp://{{ server_user }}@{{ server }}/projects/TheEastCut/configs/temp_{{ hostname }}.cfg cli vrf mgmt','{{ server_password }}',]
+      register: running_config
+
+    - name: Get checksum of stored GOLDEN config
+
+      stat:
+        path : "/root/projects/TheEastCut/configs/golden_{{ hostname }}.cfg"
+#        checksum_algorithm: sha256
+        get_checksum: yes
+      register: golden
+
+    - debug: var=golden.stat.checksum
+
+    - name: Get checksum of pulled RUNNING config
+      stat:
+         path : "/root/projects/TheEastCut/configs/temp_{{ hostname }}.cfg"
+  #       checksum_algorithm: sha256
+         get_checksum: yes
+      register: running
+
+    - debug: var=running.stat.checksum
+
+    - set_fact:
+        golden_sha: "{{ golden.stat.checksum }}"
+        running_sha: "{{ running.stat.checksum }}"
+
+    - name: Restore Stored Golden Config to Running through TFTP
+      vars:
+        ansible_connection: network_cli      
+      aoscx_command:
+        commands: ['copy sftp://{{ server_user }}@{{ server }}/projects/TheEastCut/configs/golden_{{ hostname }}.cfg running-config vrf mgmt','{{ server_password }}',]
+      when:  golden_sha != running_sha
