@@ -13,10 +13,10 @@ Version control - draft work in progress
 
 Play List
 - main - Test connectivity and modules intergration
-- full-validate - Take a copy of the config and MD5 has to confim no changes
 - ntp-heal - check the state of ntp and fix if not enabled
 - pim-heal - Check pim is enabled and working, fix if not
 - checkpoint - Enable checkpoint, make a change, and confirm access. If access, confirm checkpoint.
+
 
 
 
@@ -26,10 +26,11 @@ Installation Notes
 ==================
 
 Requires ansible 2.9.9 or later
-Dependencies on on the arube modules
-Uses both API and SSH
+Requires - https://galaxy.ansible.com/arubanetworks/aoscx_role
+
 
 useful
+ansible-galaxy install arubanetworks.aoscx_role
 yum install tree
 yum install telnet
 
@@ -43,8 +44,8 @@ sudo yum install epel-release
 sudo yum install ansible
 
 AWX Installation
+================
 
-https://medium.com/swlh/ansible-awx-installation-5861b115455a
 
 ## Install AWX dependencies
 yum install -y python3-pip
